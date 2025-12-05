@@ -1,40 +1,102 @@
-/* General */
-body { font-family: "Noto Sans Bengali", Arial, sans-serif; margin: 0; padding: 16px; background:#fbfbfb; color:#111; }
-header { text-align:center; margin-bottom:12px; }
-h1 { font-size:20px; margin:0; }
-#controls { margin-bottom:12px; text-align:center; }
-label { margin-right:10px; font-size:14px; }
+:root{
+  --bg:#0f1720;
+  --card:#0b1220;
+  --accent:#1e90ff;
+  --pill-bg:#112233;
+  --pill-border:#274a7f;
+  --text:#e6f0ff;
+  --muted:#98a0b0;
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Noto Sans", "Noto Nastaliq Urdu", Arial, sans-serif;
+  background: linear-gradient(180deg,#051223 0%, #081627 100%);
+  color:var(--text);
+  min-height:100vh;
+  padding-bottom:40px;
+}
+
+/* Header */
+.app-header{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  padding:12px 16px;
+  background:linear-gradient(90deg,#062233, #05253a);
+  box-shadow: 0 6px 18px rgba(3,10,18,0.6);
+  position:sticky; top:0; z-index:20;
+}
+.app-header .back{ color:var(--muted); cursor:pointer; }
+.app-header .title{ font-weight:700; font-size:16px; color:var(--text); }
+
+/* container */
+#main{ padding:16px; max-width:900px; margin:0 auto; }
 
 /* Ayah card */
-.ayah { background:#fff; border:1px solid #e0e0e0; border-radius:8px; padding:12px; margin-bottom:10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
-.arabic-line { direction:rtl; font-size:26px; margin-bottom:8px; line-height:1.6; }
-.word { display:inline-block; background:#eef6ff; padding:2px 6px; margin:0 3px 4px 0; border-radius:4px; cursor:pointer; font-size:22px; }
-.translations { font-size:14px; color:#333; margin-bottom:8px; }
-.actions { margin-top:6px; }
-button.action-btn { padding:6px 10px; border-radius:6px; border:1px solid #ccc; background:#fafafa; cursor:pointer; margin-right:6px; }
+.ayah{
+  background: linear-gradient(180deg,#071a2a, #04202a);
+  border-radius:12px;
+  padding:14px;
+  margin-bottom:12px;
+  box-shadow: 0 8px 30px rgba(0,0,0,0.3);
+  border:1px solid rgba(255,255,255,0.03);
+}
+.arabic-line{ direction:rtl; font-size:28px; text-align:right; line-height:1.6; margin-bottom:10px; }
+.word{ display:inline-block; background:transparent; color:var(--accent); padding:4px 8px; border-radius:8px; margin:0 6px 6px 0; cursor:pointer; font-size:26px; border:1px solid rgba(30,144,255,0.15); transition: transform .08s ease; }
+.word:hover{ transform: translateY(-2px); box-shadow: 0 6px 18px rgba(16,64,128,0.18); background: rgba(30,144,255,0.04); }
 
-/* Modal common */
-.modal { display:none; position: fixed; inset:0; z-index:999; background: rgba(0,0,0,0.6); align-items:center; justify-content:center; }
-.modal .modal-inner { background:#fff; border-radius:10px; padding:18px; width:90%; max-width:900px; max-height:80vh; overflow:auto; position:relative; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
-.modal .modal-inner.small { max-width:520px; }
-.modal-close { position:absolute; top:8px; right:8px; border:0; background:transparent; font-size:20px; cursor:pointer; }
+/* translations */
+.translations{ color:var(--muted); font-size:14px; margin-bottom:8px; }
 
-/* Fullscreen grammar modal (vertical reading) */
-.fullscreen { display:flex; }
-.fullscreen .modal-inner { width:95%; height:92vh; max-height:92vh; margin:auto; overflow-y:auto; padding:20px; }
-.grammar-body { font-size:15px; line-height:1.8; white-space:normal; color:#111; }
+/* action row */
+.actions{ display:flex; gap:8px; margin-top:6px; }
+button.action-btn{ padding:8px 12px; border-radius:10px; border:0; background:rgba(255,255,255,0.03); color:var(--text); cursor:pointer; box-shadow: inset 0 -2px 0 rgba(255,255,255,0.01); }
 
-/* Each grammar entry block */
-.grammar-entry { margin-bottom:18px; padding-bottom:10px; border-bottom:1px dashed #eee; }
-.grammar-entry .group-ar { direction:rtl; font-size:22px; font-weight:600; margin-bottom:6px; }
-.grammar-entry .group-note { font-size:14px; color:#222; }
+/* modal common */
+.modal{ display:none; position:fixed; inset:0; z-index:999; align-items:center; justify-content:center; background: rgba(2,6,12,0.6); }
+.modal .modal-inner{ background: linear-gradient(180deg,#071a1f,#041829); color:var(--text); border-radius:14px; padding:18px; width:92%; max-width:920px; max-height:86vh; overflow:auto; position:relative; border:1px solid rgba(255,255,255,0.04); box-shadow: 0 18px 60px rgba(2,6,12,0.6); }
 
-/* Word detail */
-.word-body { font-size:14px; line-height:1.6; }
-.word-label { font-weight:700; margin-top:6px; display:block; color:#222; }
-.word-value { margin-left:6px; color:#111; }
+/* grammar full-screen variant */
+.fullscreen .modal-inner{ width:96%; height:92vh; border-radius:12px; }
 
-/* Responsive tweaks */
-@media (min-width:900px) {
-  .modal .modal-inner { max-width:1100px; }
+/* close */
+.modal-close{ position:absolute; right:14px; top:12px; background:transparent; border:0; color:var(--muted); font-size:20px; cursor:pointer; }
+
+/* Word modal top */
+.word-inner{ padding:20px; max-width:720px; }
+.word-top{ display:flex; flex-direction:column; gap:6px; align-items:flex-start; margin-bottom:12px; }
+.word-ar{ direction:rtl; font-size:40px; color: #8be3a8; font-weight:700; }
+.word-bn{ font-size:18px; color:var(--text); opacity:0.95; margin-top:2px; }
+
+/* morphology badges row */
+.morph-row{ display:flex; gap:8px; flex-wrap:wrap; margin-bottom:14px; }
+.badge{ background: linear-gradient(90deg,#0b2030,#052a3f); padding:8px 12px; border-radius:999px; border:1px solid var(--pill-border); color:var(--text); font-size:13px; box-shadow: 0 6px 20px rgba(3,10,18,0.5); }
+
+/* forms grid — rounded pill cards */
+.forms-grid{ display:flex; gap:10px; flex-wrap:wrap; margin-bottom:14px; }
+.pill{
+  background: linear-gradient(180deg, rgba(255,255,255,0.03), rgba(255,255,255,0.01));
+  border-radius:14px;
+  padding:12px 16px;
+  min-width:120px;
+  text-align:center;
+  border:1px solid rgba(255,255,255,0.04);
+  box-shadow: 0 6px 22px rgba(0,0,0,0.6);
+}
+.pill .p-title{ font-size:12px; color:var(--muted); margin-bottom:6px; }
+.pill .p-val{ font-size:18px; color:var(--text); font-weight:700; }
+
+/* grammap area */
+.grammap{ border-top:1px dashed rgba(255,255,255,0.04); padding-top:12px; margin-top:8px; color:var(--muted); font-size:14px; }
+.grammap .row{ display:flex; gap:8px; align-items:flex-start; margin-bottom:8px; }
+.gram-key{ width:120px; color:#9fb6d9; font-weight:700; }
+.gram-val{ flex:1; color:var(--text); }
+
+/* small screens tweaks */
+@media (max-width:520px){
+  .word-ar{ font-size:32px; }
+  .arabic-line{ font-size:22px; }
+  .pill{ min-width:100px; padding:10px; }
 }
