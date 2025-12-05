@@ -1,71 +1,67 @@
 let surahData = null;
 
-// fetch JSON with error logging
 fetch('data/surah_101.json')
-  .then(resp => {
-    if(!resp.ok) throw new Error('পাঠাতে ব্যর্থ হলো: ' + resp.statusText);
-    return resp.json();
+  .then(r => {
+    if(!r.ok) throw new Error('Failed to fetch JSON: ' + r.status);
+    return r.json();
   })
   .then(data => {
     surahData = data;
-    renderSurah();
+    renderAyatSample(); // only render ayat 3 sample
   })
   .catch(err => {
     console.error(err);
-    const container = document.getElementById('surahContainer');
-    container.innerHTML = `<div style="color:red">JSON লোড করতে সমস্যা হয়েছে — কনসোলে দেখুন।</div>`;
+    document.getElementById('surahWrap').innerHTML = '<div style="color:salmon">JSON লোড সমস্যা—কনসোল দেখুন।</div>';
   });
 
-// render surah (uses words[] and grammar_notes array)
-function renderSurah(){
-  const container = document.getElementById('surahContainer');
-  container.innerHTML = '';
-  if(!surahData || !surahData.ayaat) return;
+function renderAyatSample(){
+  const wrap = document.getElementById('surahWrap');
+  wrap.innerHTML = '';
+  if(!surahData) return;
 
-  surahData.ayaat.forEach(ayah => {
-    const card = document.createElement('article');
-    card.className = 'ayah';
+  // find ayah 3
+  const ayah = surahData.ayaat.find(a => a.number === 3);
+  if(!ayah){
+    wrap.innerHTML = '<div style="color:salmon">আয়াত ৩ পাওয়া যায়নি।</div>';
+    return;
+  }
 
-    // Arabic line — words as spans (grouped according to JSON words array)
-    const arDiv = document.createElement('div');
-    arDiv.className = 'arabic-line';
-    // words array is an ordered list of word objects; we show them in that order
-    ayah.words.forEach(w => {
-      const span = document.createElement('span');
-      span.className = 'word';
-      span.textContent = w.word;
-      span.title = 'Click করে বিস্তারিত দেখুন';
-      span.onclick = (ev) => { ev.stopPropagation(); openWordModal(w); };
-      arDiv.appendChild(span);
-      // add small space handled by css margin
-    });
-    card.appendChild(arDiv);
+  const card = document.createElement('div');
+  card.className = 'ayah';
 
-    // translations (checkbox controlled)
-    const transDiv = document.createElement('div');
-    transDiv.className = 'translations';
-    const os = document.getElementById('osmaniCheckbox');
-    const tw = document.getElementById('tawzihCheckbox');
-    if(os && os.checked) transDiv.innerHTML += `<div><strong>Osmani:</strong> ${ayah.translation.osmani}</div>`;
-    if(tw && tw.checked) transDiv.innerHTML += `<div><strong>Tawzih:</strong> ${ayah.translation.tawzih}</div>`;
-    card.appendChild(transDiv);
-
-    // actions: grammar full-screen
-    const actions = document.createElement('div');
-    actions.className = 'actions';
-    const gbtn = document.createElement('button');
-    gbtn.className = 'action-btn';
-    gbtn.textContent = 'Full Grammar Notes (পড়া)';
-    gbtn.onclick = (ev) => { ev.stopPropagation(); openGrammarModal(ayah); };
-    actions.appendChild(gbtn);
-
-    card.appendChild(actions);
-    container.appendChild(card);
+  // Arabic line: words clickable
+  const ar = document.createElement('div');
+  ar.className = 'arabic-line';
+  ayah.words.forEach(word => {
+    const sp = document.createElement('span');
+    sp.className = 'word';
+    sp.textContent = word.word;
+    sp.onclick = (ev) => { ev.stopPropagation(); showWordModal(word); };
+    ar.appendChild(sp);
   });
+  card.appendChild(ar);
+
+  // translations
+  const tr = document.createElement('div');
+  tr.className = 'translations';
+  tr.innerHTML = `<div><strong>অর্থ (Osmani):</strong> ${ayah.translation.osmani}</div>
+                  <div><strong>অর্থ (Tawzih):</strong> ${ayah.translation.tawzih}</div>`;
+  card.appendChild(tr);
+
+  // actions (grammar full-screen)
+  const actions = document.createElement('div');
+  actions.className = 'actions';
+  const gbtn = document.createElement('button');
+  gbtn.className = 'action-btn';
+  gbtn.textContent = 'Full Grammar Notes';
+  gbtn.onclick = () => openGrammarModal(ayah);
+  actions.appendChild(gbtn);
+  card.appendChild(actions);
+
+  wrap.appendChild(card);
 }
 
-/* ---------- Grammar modal (full-screen, vertical) ---------- */
-
+/* ---------- Grammar modal ---------- */
 const grammarModal = document.getElementById('grammarModal');
 const grammarBody = document.getElementById('grammarBody');
 const grammarTitle = document.getElementById('grammarTitle');
@@ -73,91 +69,90 @@ document.getElementById('closeGrammar').onclick = () => { grammarModal.style.dis
 
 function openGrammarModal(ayah){
   grammarTitle.textContent = `সূরা ${surahData.number} — আয়াত ${ayah.number} — বিস্তারিত ব্যাকরণ`;
-  grammarBody.innerHTML = ''; // clear
+  grammarBody.innerHTML = '';
 
-  // Grammar_notes is expected as an array of objects { group: "ARABIC GROUP", note_bn: "Bangla note" }
+  // grammar_notes_lines is array of {group, note_bn}
   if(Array.isArray(ayah.grammar_notes_lines)){
-    ayah.grammar_notes_lines.forEach(entry => {
+    ayah.grammar_notes_lines.forEach(entry=>{
       const block = document.createElement('div');
       block.className = 'grammar-entry';
-
-      // Arabic group line (one group per line)
-      const gAr = document.createElement('div');
-      gAr.className = 'group-ar';
-      gAr.textContent = entry.group; // Arabic group exactly as provided
-      block.appendChild(gAr);
-
-      // Bangla note below
-      const gNote = document.createElement('div');
-      gNote.className = 'group-note';
-      gNote.innerHTML = entry.note_bn;
-      block.appendChild(gNote);
-
+      const ar = document.createElement('div'); ar.className='group-ar'; ar.textContent = entry.group;
+      const note = document.createElement('div'); note.className='group-note'; note.innerHTML = entry.note_bn;
+      block.appendChild(ar); block.appendChild(note);
       grammarBody.appendChild(block);
     });
   } else {
-    // fallback: if single string provided
-    const fallback = document.createElement('div');
-    fallback.className = 'grammar-entry';
-    fallback.innerHTML = `<div class="group-note">${ayah.grammar_notes || 'কোনো ব্যাখ্যা নেই।'}</div>`;
-    grammarBody.appendChild(fallback);
+    grammarBody.innerHTML = `<div class="group-note">${ayah.grammar_notes || 'কোনো ব্যাখ্যা নেই'}</div>`;
   }
 
-  // show modal (full-screen)
   grammarModal.style.display = 'flex';
 }
 
-/* ---------- Word modal (compact, structured, no raw JSON) ---------- */
-
+/* ---------- Word modal ---------- */
 const wordModal = document.getElementById('wordModal');
-const wordBody = document.getElementById('wordBody');
-const wordTitle = document.getElementById('wordTitle');
+const wordAr = document.getElementById('wordAr');
+const wordBn = document.getElementById('wordBn');
+const morphBadges = document.getElementById('morphBadges');
+const formsGrid = document.getElementById('formsGrid');
+const gramMap = document.getElementById('gramMap');
 document.getElementById('closeWord').onclick = () => { wordModal.style.display = 'none'; };
 
-function openWordModal(wordObj){
-  // wordObj expected with many fields (see sample JSON)
-  wordTitle.textContent = wordObj.word || 'শব্দ';
+function clearNode(node){ while(node.firstChild) node.removeChild(node.firstChild); }
 
-  // Build a clear Bangla structured view
-  wordBody.innerHTML = '';
+function showWordModal(word){
+  // Title
+  wordAr.textContent = word.word || '';
+  wordBn.textContent = word.meaning_bn || word.meaning || '';
 
-  const addRow = (label, value) => {
-    const lab = document.createElement('div');
-    lab.className = 'word-label';
-    lab.textContent = label;
-    wordBody.appendChild(lab);
+  // badges row
+  clearNode(morphBadges);
+  const badges = [
+    word.pos_bn || word.pos || '',
+    word.pos_detail || '',
+    word.form ? `ফর্ম-${word.form}` : (word.form_bn || ''),
+    word.tense || word.pos_detail || '',
+    word.person ? word.person : '',
+    word.number ? word.number : '',
+    word.gender ? word.gender : ''
+  ];
+  badges.forEach(b=>{
+    if(b){
+      const d = document.createElement('div'); d.className='badge'; d.textContent = b; morphBadges.appendChild(d);
+    }
+  });
 
-    const val = document.createElement('div');
-    val.className = 'word-value';
-    val.textContent = (value === null || value === undefined || value === '') ? '-' : value;
-    wordBody.appendChild(val);
-  };
+  // forms grid: past/present/imperative/noun-form etc
+  clearNode(formsGrid);
+  const pillItems = [
+    {title:'অতীত (Past)', val: word.tense_forms?.past || word.past || word.past_form || '-'},
+    {title:'বর্তমান (Present)', val: word.tense_forms?.present || word.present || '-'},
+    {title:'আদেশ (Imperative)', val: word.tense_forms?.imperative || word.imperative || '-'},
+    {title:'Root (মূল)', val: word.root || '-'},
+    {title:'Noun / Masdar', val: word.noun || word.masdar || '-'},
+    {title:'Form', val: word.form || '-'}
+  ];
+  pillItems.forEach(it=>{
+    const p = document.createElement('div'); p.className='pill';
+    p.innerHTML = `<div class="p-title">${it.title}</div><div class="p-val">${it.val}</div>`;
+    formsGrid.appendChild(p);
+  });
 
-  addRow('মূল (Root):', wordObj.root || '-');
-  addRow('বাংলা অর্থ:', wordObj.meaning_bn || wordObj.meaning || '-');
-  addRow('ধরণ (POS):', wordObj.pos_bn || wordObj.type_bn || wordObj.type || '-');
-  addRow('বর্ণনা (সংকেত):', wordObj.notes_bn || '-');
-
-  // Morphology
-  addRow('ব্যাকরণিক শ্রেণি:', wordObj.pos_detail || '-'); // اسم/فعل/حرف ইত্যাদি
-  addRow('ব্যক্তি:', wordObj.person || '-'); // ৩য় পুরুষ ইত্যাদি
-  addRow('বচন:', wordObj.number || '-'); // একবচন/বহুবচন
-  addRow('লিঙ্গ:', wordObj.gender || '-'); // পুং/স্ত্রীলিঙ্গ
-  addRow('আকর/ওস্তি (Case):', wordObj.case || '-'); // مرفوع/منصوب ইত্যাদি
-  addRow('নির্দিষ্ট (ال):', wordObj.definite ? 'হ্যাঁ (ال)' : 'না');
-
-  // Verb extra forms
-  if(wordObj.pos_detail && wordObj.pos_detail.toLowerCase().includes('فعل') ){
-    addRow('মূল ধরণ (Form):', wordObj.form || '-');
-    addRow('অতীত (past):', wordObj.tense_forms ? (wordObj.tense_forms.past || '-') : (wordObj.past || '-'));
-    addRow('বর্তমান (present):', wordObj.tense_forms ? (wordObj.tense_forms.present || '-') : (wordObj.present || '-'));
-    addRow('আদেশ (imperative):', wordObj.tense_forms ? (wordObj.tense_forms.imperative || '-') : (wordObj.imperative || '-'));
-    addRow('বিষয়/কার্য (subject/object):', wordObj.subject || (wordObj.object ? `Object: ${wordObj.object}` : '-') );
-  }
+  // grammar map (subject/object/notes)
+  clearNode(gramMap);
+  const rows = [
+    {k:'Subject (فاعل):', v: word.subject || '-'},
+    {k:'Object (مفعول):', v: word.object || '-'},
+    {k:'Case (إعراب):', v: word.case || '-'},
+    {k:'Definite (ال):', v: word.definite ? 'হ্যাঁ (ال)' : 'না'},
+    {k:'Notes:', v: word.notes_bn || word.notes || '-'}
+  ];
+  rows.forEach(r=>{
+    const rdiv = document.createElement('div'); rdiv.className='row';
+    const k = document.createElement('div'); k.className='gram-key'; k.textContent = r.k;
+    const v = document.createElement('div'); v.className='gram-val'; v.textContent = r.v;
+    rdiv.appendChild(k); rdiv.appendChild(v);
+    gramMap.appendChild(rdiv);
+  });
 
   wordModal.style.display = 'flex';
 }
-
-/* Update translations on checkbox change */
-document.getElementById('osmaniCheckbox').addEventListener('change', renderSurah);
-document.getElementById('tawzihCheckbox').addEventListener('change', renderSurah);
