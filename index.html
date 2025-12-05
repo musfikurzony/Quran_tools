@@ -3,50 +3,39 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Quran Study — Surah 101:3 (Sample)</title>
+  <title>Quran Study — Surah 101 (Grammar View)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
   <header class="app-header">
     <div class="back">←</div>
-    <div class="title">আল-ক্বারিয়াহ ১০১:৩</div>
+    <div class="title">আল-ক্বারিয়াহ — সূরা ১০১</div>
   </header>
 
   <main id="main">
-    <section id="surahWrap">
-      <!-- rendered by script.js -->
-    </section>
+    <section id="surahWrap"></section>
   </main>
 
-  <!-- Full-screen Grammar Modal (for ayah detail) -->
+  <!-- Full-screen Grammar Modal -->
   <div id="grammarModal" class="modal fullscreen">
     <div class="modal-inner">
       <button class="modal-close" id="closeGrammar">✖</button>
-      <h2 id="grammarTitle">আয়াত ব্যাখ্যা</h2>
+      <h2 id="grammarTitle">পূর্ণ ব্যাকরণী বক্তব্য</h2>
       <div id="grammarBody" class="grammar-body"></div>
     </div>
   </div>
 
-  <!-- Word Detail Modal (dark style, rounded pill cards) -->
+  <!-- Word Detail Modal -->
   <div id="wordModal" class="modal">
     <div class="modal-inner word-inner">
       <button class="modal-close" id="closeWord">✖</button>
       <div class="word-top">
-        <div class="word-ar" id="wordAr">أَدْرَكَ</div>
-        <div class="word-bn" id="wordBn">তোমাকে জানাবে</div>
+        <div class="word-ar" id="wordAr">—</div>
+        <div class="word-bn" id="wordBn">—</div>
       </div>
-
-      <div class="morph-row" id="morphBadges">
-        <!-- badges injected here -->
-      </div>
-
-      <div class="forms-grid" id="formsGrid">
-        <!-- pill cards injected here -->
-      </div>
-
-      <div class="grammap" id="gramMap">
-        <!-- subject / object / root etc -->
-      </div>
+      <div class="morph-row" id="morphBadges"></div>
+      <div class="forms-grid" id="formsGrid"></div>
+      <div class="grammap" id="gramMap"></div>
     </div>
   </div>
 
