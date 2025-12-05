@@ -1,0 +1,10 @@
+body { font-family: sans-serif; padding: 10px; background: #f4f4f4; }
+.surah { cursor: pointer; padding: 10px; background: #fff; margin-bottom: 5px; border-radius: 5px; }
+.ayah { padding: 5px 10px; background: #e8f0fe; margin: 3px 0; border-radius: 5px; }
+.arabic { font-size: 24px; direction: rtl; }
+.word { color: blue; cursor: pointer; }
+.translations { margin-top: 5px; font-size: 14px; }
+.options-btn, .pin-btn, .fav-btn { cursor: pointer; padding: 2px 5px; background: #ccc; border-radius: 3px; margin-left: 5px; }
+.popup { position: fixed; top: 5%; left: 50%; transform: translateX(-50%); width: 90%; max-height: 90%; overflow-y: scroll; background: #fff; padding: 20px; border-radius: 10px; box-shadow: 0 2px 15px rgba(0,0,0,0.3); display: none; z-index: 1000; }
+.popup .close { cursor: pointer; float: right; color: red; font-weight: bold; font-size: 18px; }
+#last-read { margin-bottom: 10px; font-weight: bold; }
