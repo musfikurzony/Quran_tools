@@ -1,14 +1,40 @@
-body { font-family: Arial, sans-serif; padding: 10px; background: #f9f9f9; }
-header { text-align: center; margin-bottom: 20px; }
-#settings { margin-bottom: 15px; }
-.ayah { border: 1px solid #ddd; padding: 10px; margin-bottom: 10px; border-radius: 5px; background: #fff; }
-.ayah .arabic { font-size: 24px; margin-bottom: 5px; cursor: pointer; }
-.ayah .translation { margin-bottom: 5px; }
-button.grammarBtn { margin-top: 5px; padding: 5px 10px; cursor: pointer; }
+/* General */
+body { font-family: "Noto Sans Bengali", Arial, sans-serif; margin: 0; padding: 16px; background:#fbfbfb; color:#111; }
+header { text-align:center; margin-bottom:12px; }
+h1 { font-size:20px; margin:0; }
+#controls { margin-bottom:12px; text-align:center; }
+label { margin-right:10px; font-size:14px; }
 
-/* Modal Styling */
-.modal { display: none; position: fixed; z-index: 100; left: 0; top: 0; width: 100%; height: 100%; overflow: auto; background-color: rgba(0,0,0,0.6); }
-.modal-content { background-color: #fefefe; margin: 10% auto; padding: 20px; border: 1px solid #888; width: 90%; max-height: 70vh; overflow-y: auto; border-radius: 10px; }
-.close { color: #aaa; float: right; font-size: 28px; font-weight: bold; cursor: pointer; }
-.close:hover, .close:focus { color: black; }
-.word { background: #eef; cursor: pointer; border-radius: 3px; padding: 0 3px; margin: 0 2px; }
+/* Ayah card */
+.ayah { background:#fff; border:1px solid #e0e0e0; border-radius:8px; padding:12px; margin-bottom:10px; box-shadow: 0 1px 2px rgba(0,0,0,0.03); }
+.arabic-line { direction:rtl; font-size:26px; margin-bottom:8px; line-height:1.6; }
+.word { display:inline-block; background:#eef6ff; padding:2px 6px; margin:0 3px 4px 0; border-radius:4px; cursor:pointer; font-size:22px; }
+.translations { font-size:14px; color:#333; margin-bottom:8px; }
+.actions { margin-top:6px; }
+button.action-btn { padding:6px 10px; border-radius:6px; border:1px solid #ccc; background:#fafafa; cursor:pointer; margin-right:6px; }
+
+/* Modal common */
+.modal { display:none; position: fixed; inset:0; z-index:999; background: rgba(0,0,0,0.6); align-items:center; justify-content:center; }
+.modal .modal-inner { background:#fff; border-radius:10px; padding:18px; width:90%; max-width:900px; max-height:80vh; overflow:auto; position:relative; box-shadow: 0 8px 30px rgba(0,0,0,0.25); }
+.modal .modal-inner.small { max-width:520px; }
+.modal-close { position:absolute; top:8px; right:8px; border:0; background:transparent; font-size:20px; cursor:pointer; }
+
+/* Fullscreen grammar modal (vertical reading) */
+.fullscreen { display:flex; }
+.fullscreen .modal-inner { width:95%; height:92vh; max-height:92vh; margin:auto; overflow-y:auto; padding:20px; }
+.grammar-body { font-size:15px; line-height:1.8; white-space:normal; color:#111; }
+
+/* Each grammar entry block */
+.grammar-entry { margin-bottom:18px; padding-bottom:10px; border-bottom:1px dashed #eee; }
+.grammar-entry .group-ar { direction:rtl; font-size:22px; font-weight:600; margin-bottom:6px; }
+.grammar-entry .group-note { font-size:14px; color:#222; }
+
+/* Word detail */
+.word-body { font-size:14px; line-height:1.6; }
+.word-label { font-weight:700; margin-top:6px; display:block; color:#222; }
+.word-value { margin-left:6px; color:#111; }
+
+/* Responsive tweaks */
+@media (min-width:900px) {
+  .modal .modal-inner { max-width:1100px; }
+}
