@@ -1,6 +1,6 @@
-// Storage for last read, pin, and favorites
+// Small storage helper (used later if needed)
 const storage = {
-  get: (key) => JSON.parse(localStorage.getItem(key) || 'null'),
-  set: (key, value) => localStorage.setItem(key, JSON.stringify(value)),
-  remove: (key) => localStorage.removeItem(key)
+  set(key, value){ localStorage.setItem(key, JSON.stringify(value)); },
+  get(key){ try { return JSON.parse(localStorage.getItem(key)); } catch(e){ return null; } },
+  remove(key){ localStorage.removeItem(key); }
 };
