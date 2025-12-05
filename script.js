@@ -1,11 +1,16 @@
 let surahData;
 
+// Fetch Surah 101 JSON
 fetch('data/surah_101.json')
-  .then(res => res.json())
+  .then(res => {
+    if(!res.ok) throw new Error('Failed to fetch JSON');
+    return res.json();
+  })
   .then(data => {
     surahData = data;
     renderSurah();
-  });
+  })
+  .catch(err => console.error(err));
 
 function renderSurah() {
   const container = document.getElementById('surahContainer');
