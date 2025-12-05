@@ -1,71 +1,74 @@
-function displayAyat(surah) {
-  const container = document.getElementById('ayah-list');
-  container.innerHTML = `<h3>${surah.name_bn} (${surah.name_ar})</h3>`;
+let surahData;
 
-  surah.ayaat.forEach(ayah => {
-    const div = document.createElement('div');
-    div.className = 'ayah';
+fetch('data/surah_101.json')
+  .then(res => res.json())
+  .then(data => {
+    surahData = data;
+    renderSurah();
+  });
 
-    let arabicHTML = '';
+function renderSurah() {
+  const container = document.getElementById('surahContainer');
+  container.innerHTML = '';
+
+  surahData.ayaat.forEach(ayah => {
+    const ayahDiv = document.createElement('div');
+    ayahDiv.className = 'ayah';
+
+    // Arabic with word clickable
+    const arabicDiv = document.createElement('div');
+    arabicDiv.className = 'arabic';
     ayah.words.forEach(word => {
-      arabicHTML += `<span class="word" onclick="showWordDetails(event, ${surah.number}, ${ayah.number}, '${word.word}')">${word.word}</span> `;
+      const wordSpan = document.createElement('span');
+      wordSpan.className = 'word';
+      wordSpan.textContent = word.word;
+      wordSpan.onclick = () => showWordModal(word);
+      arabicDiv.appendChild(wordSpan);
+      arabicDiv.appendChild(document.createTextNode(' '));
     });
+    ayahDiv.appendChild(arabicDiv);
 
-    div.innerHTML = `
-      <div class="arabic">${arabicHTML}</div>
-      <div class="translations">
-        <b>অর্থ:</b> ${ayah.translation.osmani} | ${ayah.translation.tawzih}
-        <span class="options-btn" onclick="showOptions(event, ${surah.number}, ${ayah.number})">⚙️</span>
-        <span class="pin-btn" onclick="pinAyah(${surah.number}, ${ayah.number})">📌</span>
-        <span class="fav-btn" onclick="toggleFavorite(${surah.number}, ${ayah.number})">⭐</span>
-      </div>
-    `;
-    div.onclick = () => saveLastRead(surah.number, ayah.number);
-    container.appendChild(div);
+    // Translations
+    const transDiv = document.createElement('div');
+    transDiv.className = 'translation';
+    const osmaniChk = document.getElementById('osmaniCheckbox');
+    const tawzihChk = document.getElementById('tawzihCheckbox');
+    if(osmaniChk.checked) transDiv.innerHTML += `<div><strong>Osmani:</strong> ${ayah.translation.osmani}</div>`;
+    if(tawzihChk.checked) transDiv.innerHTML += `<div><strong>Tawzih:</strong> ${ayah.translation.tawzih}</div>`;
+    ayahDiv.appendChild(transDiv);
+
+    // Grammar Notes Button
+    const grammarBtn = document.createElement('button');
+    grammarBtn.className = 'grammarBtn';
+    grammarBtn.textContent = 'Grammar Notes';
+    grammarBtn.onclick = () => showGrammarModal(ayah);
+    ayahDiv.appendChild(grammarBtn);
+
+    container.appendChild(ayahDiv);
   });
 }
 
-// Popups
-function showOptions(event, surahNum, ayahNum) {
-  event.stopPropagation();
-  fetch(`data/surah_${surahNum}.json`)
-    .then(res => res.json())
-    .then(surah => {
-      const ayah = surah.ayaat.find(a => a.number === ayahNum);
-      openPopup(`<h3>Surah ${surahNum}, Ayah ${ayahNum} Grammar Notes</h3><p>${ayah.grammar_notes}</p>`);
-    });
+// Grammar Modal
+const grammarModal = document.getElementById('grammarModal');
+const grammarContent = document.getElementById('grammarContent');
+function showGrammarModal(ayah) {
+  grammarContent.textContent = ayah.grammar_notes;
+  grammarModal.style.display = 'block';
 }
 
-function showWordDetails(event, surahNum, ayahNum, word) {
-  event.stopPropagation();
-  fetch(`data/surah_${surahNum}.json`)
-    .then(res => res.json())
-    .then(surah => {
-      const ayah = surah.ayaat.find(a => a.number === ayahNum);
-      const wordData = ayah.words.find(w => w.word === word);
-      if (!wordData) return;
-      const content = `
-        <b>${wordData.word}</b><br>
-        Root: ${wordData.root}<br>
-        Meaning: ${wordData.meaning}<br>
-        Type: ${wordData.type || '-'}<br>
-        Gender: ${wordData.gender || '-'}<br>
-        Tense: ${wordData.tense || '-'}
-      `;
-      openPopup(content);
-    });
+// Word Modal
+const wordModal = document.getElementById('wordModal');
+const wordContent = document.getElementById('wordContent');
+function showWordModal(word) {
+  wordContent.textContent = JSON.stringify(word, null, 2);
+  wordModal.style.display = 'block';
 }
 
-function openPopup(content) {
-  const popup = document.getElementById('popup');
-  document.getElementById('popup-content').innerHTML = content;
-  popup.style.display = 'block';
-}
+// Close Modals
+document.querySelectorAll('.close').forEach(span => {
+  span.onclick = () => { span.parentElement.parentElement.style.display = 'none'; }
+});
 
-function closePopup() {
-  document.getElementById('popup').style.display = 'none';
-}
-
-// Initialize
-loadSurahList();
-updateLastReadUI();
+// Update translations on checkbox change
+document.getElementById('osmaniCheckbox').addEventListener('change', renderSurah);
+document.getElementById('tawzihCheckbox').addEventListener('change', renderSurah);
