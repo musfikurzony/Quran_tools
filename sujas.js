@@ -1,7 +1,4 @@
-// Currently only Surah 101, extend later
-const suras = {
-  "101": {
-    "name": "আল-ক্বারিয়াহ্",
-    "ayaat": 11
-  }
-};
+// placeholder sura index (extendable)
+const suraIndex = [
+  { number: 101, name_bn: "আল-ক্বারিয়াহ্", file: "data/surah_101.json" }
+];
