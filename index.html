@@ -1,46 +1,48 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Quran Study — Surah 101</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Surah 101 - Grammar Tool</title>
+
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header class="app-header">
-    <div class="back">←</div>
-    <div class="title">আল-ক্বারিয়াহ — সূরা ১০১</div>
+
+  <!-- Header -->
+  <header class="topbar">
+    <h2>সূরা ১০১ – আল-ক্বারিআ</h2>
   </header>
 
-  <main id="main">
-    <section id="surahWrap"></section>
-  </main>
+  <!-- Surah container -->
+  <div id="surahWrap" class="surah-wrap">
+    লোড হচ্ছে...
+  </div>
 
-  <!-- Grammar Notes Modal -->
-  <div id="grammarModal" class="modal fullscreen">
-    <div class="modal-inner">
-      <button class="modal-close" id="closeGrammar">✖</button>
-      <h2 id="grammarTitle">পূর্ণ ব্যাকরণী বক্তব্য</h2>
-      <div id="grammarBody" class="grammar-body"></div>
+  <!-- Full Grammar Modal -->
+  <div id="grammarModal" class="modal">
+    <div class="modal-content">
+      <span id="closeGrammar" class="close">&times;</span>
+      <h3 id="grammarTitle"></h3>
+      <div id="grammarBody"></div>
     </div>
   </div>
 
-  <!-- Word Detail Modal -->
+  <!-- Word Info Modal -->
   <div id="wordModal" class="modal">
-    <div class="modal-inner word-inner">
-      <button class="modal-close" id="closeWord">✖</button>
-      <div class="word-top">
-        <div class="word-ar" id="wordAr"></div>
-        <div class="word-bn" id="wordBn"></div>
-      </div>
-      <div class="morph-row" id="morphBadges"></div>
-      <div class="forms-grid" id="formsGrid"></div>
-      <div class="grammap" id="gramMap"></div>
+    <div class="modal-content">
+      <span id="closeWord" class="close">&times;</span>
+
+      <div class="word-ar" id="wordAr"></div>
+      <div class="word-bn" id="wordBn"></div>
+
+      <div id="morphBadges" class="badge-row"></div>
+      <div id="formsGrid" class="forms-grid"></div>
+      <div id="gramMap" class="gram-map"></div>
     </div>
   </div>
 
-  <script src="data/surah_101.js"></script>
-  <script src="storage.js"></script>
   <script src="script.js"></script>
+
 </body>
 </html>
