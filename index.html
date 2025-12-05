@@ -4,22 +4,37 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Quran Study Tool - Surah 101</title>
-<link rel="stylesheet" href="css/style.css">
+<link rel="stylesheet" href="style.css">
 </head>
 <body>
-<h2>Quran Study Tool - Surah 101 Test</h2>
-<div id="last-read">Last Read: None</div>
-<div id="surah-list"></div>
-<div id="ayah-list"></div>
 
-<!-- Popup for grammar notes -->
-<div id="popup" class="popup">
-  <span class="close" onclick="closePopup()">✖</span>
-  <div id="popup-content"></div>
+<header>
+  <h1>সূরা ১০১ - আল-ক্বারিয়াহ্</h1>
+</header>
+
+<div id="settings">
+  <label><input type="checkbox" id="osmaniCheckbox" checked> Osmani অনুবাদ দেখাও</label>
+  <label><input type="checkbox" id="tawzihCheckbox" checked> Tawzih অনুবাদ দেখাও</label>
 </div>
 
-<script src="js/suras.js"></script>
-<script src="js/storage.js"></script>
-<script src="js/script.js"></script>
+<div id="surahContainer"></div>
+
+<!-- Grammar Notes Modal -->
+<div id="grammarModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <pre id="grammarContent"></pre>
+  </div>
+</div>
+
+<!-- Word Details Modal -->
+<div id="wordModal" class="modal">
+  <div class="modal-content">
+    <span class="close">&times;</span>
+    <pre id="wordContent"></pre>
+  </div>
+</div>
+
+<script src="script.js"></script>
 </body>
 </html>
