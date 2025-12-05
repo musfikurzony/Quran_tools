@@ -1,42 +1,43 @@
 <!DOCTYPE html>
 <html lang="bn">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Quran Study Tool - Surah 101</title>
-<link rel="stylesheet" href="style.css">
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Quran Study Tool - Surah 101 (Sample)</title>
+  <link rel="stylesheet" href="style.css" />
 </head>
 <body>
+  <header>
+    <h1>সূরা ১০১ - আল-ক্বারিয়াহ্ (Sample)</h1>
+  </header>
 
-<header>
-  <h1>সূরা ১০১ - আল-ক্বারিয়াহ্</h1>
-</header>
-
-<div id="settings">
-  <label><input type="checkbox" id="osmaniCheckbox" checked> Osmani অনুবাদ দেখাও</label>
-  <label><input type="checkbox" id="tawzihCheckbox" checked> Tawzih অনুবাদ দেখাও</label>
-</div>
-
-<div id="surahContainer"></div>
-
-<!-- Grammar Notes Modal -->
-<div id="grammarModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <pre id="grammarContent"></pre>
+  <div id="controls">
+    <label><input type="checkbox" id="osmaniCheckbox" checked> Osmani অনুবাদ দেখাও</label>
+    <label><input type="checkbox" id="tawzihCheckbox" checked> Tawzih অনুবাদ দেখাও</label>
   </div>
-</div>
 
-<!-- Word Details Modal -->
-<div id="wordModal" class="modal">
-  <div class="modal-content">
-    <span class="close">&times;</span>
-    <pre id="wordContent"></pre>
+  <main id="surahContainer" aria-live="polite"></main>
+
+  <!-- Full-screen grammar modal (vertical scroll) -->
+  <div id="grammarModal" class="modal fullscreen">
+    <div class="modal-inner">
+      <button class="modal-close" id="closeGrammar">✖</button>
+      <h2 id="grammarTitle">Grammar Notes</h2>
+      <div id="grammarBody" class="grammar-body"></div>
+    </div>
   </div>
-</div>
 
-<script src="storage.js"></script>
-<script src="suras.js"></script>
-<script src="script.js"></script>
+  <!-- Word detail modal -->
+  <div id="wordModal" class="modal">
+    <div class="modal-inner small">
+      <button class="modal-close" id="closeWord">✖</button>
+      <h3 id="wordTitle">Word Detail</h3>
+      <div id="wordBody" class="word-body"></div>
+    </div>
+  </div>
+
+  <script src="storage.js"></script>
+  <script src="suras.js"></script>
+  <script src="script.js"></script>
 </body>
 </html>
