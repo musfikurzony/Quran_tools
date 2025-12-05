@@ -1,4 +1,3 @@
-// Small storage helper (used later if needed)
 const storage = {
   set(key, value){ localStorage.setItem(key, JSON.stringify(value)); },
   get(key){ try { return JSON.parse(localStorage.getItem(key)); } catch(e){ return null; } },
