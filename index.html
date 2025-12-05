@@ -3,36 +3,50 @@
 <head>
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
-  <title>Quran Study Tool - Surah 101 (Sample)</title>
+  <title>Quran Study — Surah 101:3 (Sample)</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
-  <header>
-    <h1>সূরা ১০১ - আল-ক্বারিয়াহ্ (Sample)</h1>
+  <header class="app-header">
+    <div class="back">←</div>
+    <div class="title">আল-ক্বারিয়াহ ১০১:৩</div>
   </header>
 
-  <div id="controls">
-    <label><input type="checkbox" id="osmaniCheckbox" checked> Osmani অনুবাদ দেখাও</label>
-    <label><input type="checkbox" id="tawzihCheckbox" checked> Tawzih অনুবাদ দেখাও</label>
-  </div>
+  <main id="main">
+    <section id="surahWrap">
+      <!-- rendered by script.js -->
+    </section>
+  </main>
 
-  <main id="surahContainer" aria-live="polite"></main>
-
-  <!-- Full-screen grammar modal (vertical scroll) -->
+  <!-- Full-screen Grammar Modal (for ayah detail) -->
   <div id="grammarModal" class="modal fullscreen">
     <div class="modal-inner">
       <button class="modal-close" id="closeGrammar">✖</button>
-      <h2 id="grammarTitle">Grammar Notes</h2>
+      <h2 id="grammarTitle">আয়াত ব্যাখ্যা</h2>
       <div id="grammarBody" class="grammar-body"></div>
     </div>
   </div>
 
-  <!-- Word detail modal -->
+  <!-- Word Detail Modal (dark style, rounded pill cards) -->
   <div id="wordModal" class="modal">
-    <div class="modal-inner small">
+    <div class="modal-inner word-inner">
       <button class="modal-close" id="closeWord">✖</button>
-      <h3 id="wordTitle">Word Detail</h3>
-      <div id="wordBody" class="word-body"></div>
+      <div class="word-top">
+        <div class="word-ar" id="wordAr">أَدْرَكَ</div>
+        <div class="word-bn" id="wordBn">তোমাকে জানাবে</div>
+      </div>
+
+      <div class="morph-row" id="morphBadges">
+        <!-- badges injected here -->
+      </div>
+
+      <div class="forms-grid" id="formsGrid">
+        <!-- pill cards injected here -->
+      </div>
+
+      <div class="grammap" id="gramMap">
+        <!-- subject / object / root etc -->
+      </div>
     </div>
   </div>
 
