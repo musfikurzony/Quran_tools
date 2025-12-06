@@ -1,39 +1,53 @@
-// sujas.js
-// ---------------------------------------------------------
-// Handles grammar notes popup + position adjustment + closing
-// ---------------------------------------------------------
+// sujas.js (plain)
+(function(window){
+  window.initAppUI = function(onToggleChange){
+    // create a small top controls bar inside header (if not exists)
+    const header = document.querySelector('.topbar') || document.body;
+    // remove existing controls if any
+    const existing = document.getElementById('appControls');
+    if(existing) existing.remove();
 
-export function initGrammarPopups() {
-    document.body.addEventListener("click", function (e) {
-        const wordBtn = e.target.closest(".word-btn");
-        const box = document.querySelector(".grammar-box");
+    const ctrl = document.createElement('div');
+    ctrl.id = 'appControls';
+    ctrl.style.display = 'flex';
+    ctrl.style.gap = '12px';
+    ctrl.style.alignItems = 'center';
+    ctrl.style.margin = '10px';
+    ctrl.style.flexWrap = 'wrap';
 
-        // If clicking a word button → show grammar popup
-        if (wordBtn) {
-            const grammar = wordBtn.dataset.grammar || "No grammar notes found";
+    // translations toggles
+    const osmaniLabel = document.createElement('label');
+    osmaniLabel.style.fontSize = '14px';
+    osmaniLabel.style.display = 'flex';
+    osmaniLabel.style.alignItems = 'center';
+    osmaniLabel.innerHTML = `<input type="checkbox" id="chkOsmani" style="margin-right:6px"> তাফসীরে Osmani`;
 
-            box.innerHTML = grammar;
-            box.style.display = "block";
+    const tawzihLabel = document.createElement('label');
+    tawzihLabel.style.fontSize = '14px';
+    tawzihLabel.style.display = 'flex';
+    tawzihLabel.style.alignItems = 'center';
+    tawzihLabel.innerHTML = `<input type="checkbox" id="chkTawzih" style="margin-right:6px"> তাওযীহুল কুরআন`;
 
-            // Popup position logic (prevents going outside screen)
-            const rect = wordBtn.getBoundingClientRect();
-            const boxHeight = box.offsetHeight;
+    ctrl.appendChild(osmaniLabel);
+    ctrl.appendChild(tawzihLabel);
 
-            let topPos = rect.bottom + window.scrollY + 8;
+    header.appendChild(ctrl);
 
-            // If popup goes beyond bottom → open upward
-            if (topPos + boxHeight > window.innerHeight + window.scrollY) {
-                topPos = rect.top + window.scrollY - boxHeight - 8;
-            }
+    // load saved states
+    const os = window.AppStorage.load('showOsmani', true);
+    const tw = window.AppStorage.load('showTawzih', true);
+    document.getElementById('chkOsmani').checked = !!os;
+    document.getElementById('chkTawzih').checked = !!tw;
 
-            box.style.left = rect.left + "px";
-            box.style.top = topPos + "px";
-            return;
-        }
+    function changeHandler(){
+      const v1 = document.getElementById('chkOsmani').checked;
+      const v2 = document.getElementById('chkTawzih').checked;
+      window.AppStorage.save('showOsmani', v1);
+      window.AppStorage.save('showTawzih', v2);
+      if(typeof onToggleChange === 'function') onToggleChange(v1, v2);
+    }
 
-        // If click outside → hide popup
-        if (!e.target.closest(".grammar-box")) {
-            box.style.display = "none";
-        }
-    });
-}
+    document.getElementById('chkOsmani').addEventListener('change', changeHandler);
+    document.getElementById('chkTawzih').addEventListener('change', changeHandler);
+  };
+})(window);
