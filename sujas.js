@@ -1,72 +1,39 @@
-// ===============================================================
-// Surah 101 – Al-Qāri‘ah
-// Full Surah Data for Grammar App
-// ===============================================================
+// sujas.js
+// ---------------------------------------------------------
+// Handles grammar notes popup + position adjustment + closing
+// ---------------------------------------------------------
 
-export const surah101 = {
-  name: "Al-Qāri‘ah",
-  id: 101,
-  totalAyah: 11,
+export function initGrammarPopups() {
+    document.body.addEventListener("click", function (e) {
+        const wordBtn = e.target.closest(".word-btn");
+        const box = document.querySelector(".grammar-box");
 
-  ayahs: {
-    "1": {
-      arabic: "الْقَارِعَةُ",
-      notes: `اَلْقَارِعَةُ (মহাপ্রলয়): قَرَعَ ...`
-    },
+        // If clicking a word button → show grammar popup
+        if (wordBtn) {
+            const grammar = wordBtn.dataset.grammar || "No grammar notes found";
 
-    "2": {
-      arabic: "مَا الْقَارِعَةُ",
-      notes: `مَا الْقَارِعَةُ (মহাপ্রলয় কী?): ...`
-    },
+            box.innerHTML = grammar;
+            box.style.display = "block";
 
-    "3": {
-      arabic: "وَمَا أَدْرَاكَ مَا الْقَارِعَةُ",
-      notes: `وَ مَا أَدْرَكَ (এবং কিসে তোমাকে জানাবে?): ...`
-    },
+            // Popup position logic (prevents going outside screen)
+            const rect = wordBtn.getBoundingClientRect();
+            const boxHeight = box.offsetHeight;
 
-    "4": {
-      arabic: "يَوْمَ يَكُونُ النَّاسُ كَالْفَرَاشِ الْمَبْثُوثِ",
-      notes: `يَوْمَ (সে দিন): ...`
-    },
+            let topPos = rect.bottom + window.scrollY + 8;
 
-    "5": {
-      arabic: "وَتَكُونُ الْجِبَالُ كَالْعِهْنِ الْمَنْفُوشِ",
-      notes: `وَ تَكُونَ (এবং হবে): ...`
-    },
+            // If popup goes beyond bottom → open upward
+            if (topPos + boxHeight > window.innerHeight + window.scrollY) {
+                topPos = rect.top + window.scrollY - boxHeight - 8;
+            }
 
-    "6": {
-      arabic: "فَأَمَّا مَنْ ثَقُلَتْ مَوَازِينُهُ",
-      notes: `فَأَمَّا ...`
-    },
+            box.style.left = rect.left + "px";
+            box.style.top = topPos + "px";
+            return;
+        }
 
-    "7": {
-      arabic: "فَهُوَ فِي عِيشَةٍ رَاضِيَةٍ",
-      notes: `فَهُوَ ...`
-    },
-
-    "8": {
-      arabic: "وَأَمَّا مَنْ خَفَّتْ مَوَازِينُهُ",
-      notes: `وَأَمَّا ...`
-    },
-
-    "9": {
-      arabic: "فَأُمُّهُ هَاوِيَةٌ",
-      notes: `فَأُمُّهُ ...`
-    },
-
-    "10": {
-      arabic: "وَمَا أَدْرَاكَ مَا هِيَهْ",
-      notes: `وَ مَا أَدْرَاكَ ...`
-    },
-
-    "11": {
-      arabic: "نَارٌ حَامِيَةٌ",
-      notes: `نَارٌ ...`
-    }
-  }
-};
-
-// If your main storage uses:
-// export const surahData = {};
-// Then just do:
-// surahData["101"] = surah101;
+        // If click outside → hide popup
+        if (!e.target.closest(".grammar-box")) {
+            box.style.display = "none";
+        }
+    });
+}
