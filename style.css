@@ -1,233 +1,91 @@
-/* ============================
-   GLOBAL
-============================= */
+/* style.css — Version A (colorful morphology) */
 
-body {
-    font-family: "Noto Sans Bengali", sans-serif;
-    background: #f8f8f8;
-    margin: 0;
-    padding: 0;
+/* Base */
+:root{
+  --bg:#0b1320;
+  --card:#0f2130;
+  --accent:#4fc3f7;
+  --muted:#9fb8cf;
+  --text:#e6f7ff;
+  --pill-bg:#112a3a;
+  --green:#6be48a;
+}
+*{box-sizing:border-box}
+body{
+  margin:0;
+  font-family: "Noto Sans Bengali", "Noto Sans", sans-serif;
+  background: linear-gradient(180deg,#08111a 0%, #071624 100%);
+  color:var(--text);
+  min-height:100vh;
+  padding:18px;
 }
 
-.container {
-    padding: 20px;
-    max-width: 900px;
-    margin: auto;
-}
+/* header */
+.topbar{ display:flex; align-items:center; gap:12px; padding:12px 16px; margin-bottom:12px; }
+.topbar h2{ margin:0; font-size:18px; color:var(--text); }
 
-h1 {
-    text-align: center;
-    font-size: 26px;
-    margin-bottom: 25px;
-}
+/* top controls */
+.top-controls{ display:flex; gap:14px; align-items:center; margin:12px auto; max-width:900px; padding:6px 10px; }
+.toggle-label{ font-size:14px; color:var(--muted); }
+.toggle-label input{ margin-right:8px; transform:scale(1.1); }
 
-/* ============================
-   AYAH CARD
-============================= */
+/* surah header card */
+.surah-card{ background:linear-gradient(180deg,#061826,#072033); border-radius:12px; padding:14px; margin-bottom:12px; max-width:900px; box-shadow:0 10px 40px rgba(2,8,16,0.6); border:1px solid rgba(255,255,255,0.03);}
+.surah-title{ font-size:18px; font-weight:700; color:var(--accent); }
+.surah-meta{ font-size:13px; color:var(--muted); margin-top:4px; }
 
-.ayah {
-    background: white;
-    padding: 18px;
-    border-radius: 10px;
-    margin-bottom: 20px;
-    box-shadow: 0 0 8px rgba(0,0,0,0.1);
-}
+/* ayah card */
+.ayah{ background:linear-gradient(180deg,#071b2a,#06202b); padding:14px; border-radius:14px; margin-bottom:14px; max-width:900px; border:1px solid rgba(255,255,255,0.04); box-shadow:0 8px 30px rgba(2,6,12,0.6); position:relative; }
 
-/* Arabic text line */
+/* ayah number */
+.ayah-number{ position:absolute; left:12px; top:12px; background:rgba(255,255,255,0.03); padding:6px 10px; border-radius:999px; color:var(--muted); font-size:13px; }
 
-.arabic-line {
-    font-size: 28px;
-    text-align: right;
-    direction: rtl;
-    margin-bottom: 12px;
-    line-height: 45px;
-}
+/* Arabic line — each word as block with spacing */
+.arabic-line{ direction:rtl; text-align:right; margin-bottom:12px; }
+.word{ display:block; font-size:30px; padding:8px 12px; background: linear-gradient(90deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); border-radius:10px; margin-bottom:8px; color:var(--accent); cursor:pointer; border:1px solid rgba(255,255,255,0.03); box-shadow: inset 0 -6px 18px rgba(0,0,0,0.25); }
 
-.word {
-    cursor: pointer;
-    padding: 3px 6px;
-    border-radius: 6px;
-}
+/* word hover */
+.word:hover{ transform: translateY(-2px); background: rgba(79,195,247,0.06); }
 
-.word:hover {
-    background: #e3f2fd;
-}
+/* translations */
+.translations{ color:var(--muted); font-size:15px; margin-top:6px; line-height:1.5; }
 
-/* ============================
-   TRANSLATION
-============================= */
+/* actions */
+.actions{ display:flex; justify-content:flex-end; margin-top:8px; }
+.action-btn{ background:linear-gradient(90deg,#3aa0ff,#1fb6ff); border:0; color:white; padding:8px 12px; border-radius:10px; cursor:pointer; font-weight:700; box-shadow: 0 6px 18px rgba(27,116,170,0.12); }
 
-.translations {
-    font-size: 16px;
-    margin-top: 10px;
-    line-height: 25px;
-}
+/* modals */
+.modal{ display:none; position:fixed; inset:0; z-index:9999; align-items:center; justify-content:center; background: linear-gradient(180deg, rgba(2,6,12,0.6), rgba(2,6,12,0.6)); }
+.modal .modal-content{ background:linear-gradient(180deg,#071a22,#04202b); color:var(--text); padding:20px; border-radius:12px; width:94%; max-width:950px; max-height:90vh; overflow:auto; border:1px solid rgba(255,255,255,0.04); box-shadow:0 18px 80px rgba(0,0,0,0.6); position:relative; }
 
-/* ============================
-   ACTION BUTTON
-============================= */
+/* close */
+.modal .close{ position:absolute; right:18px; top:12px; cursor:pointer; color:var(--muted); font-size:22px; }
 
-.actions {
-    margin-top: 15px;
-    display: flex;
-    justify-content: flex-end;
-}
+/* word modal content */
+.word-ar-inner{ font-size:54px; color:#8ef0b6; display:block; text-align:center; margin-bottom:6px; direction:rtl; }
+.word-bn{ font-size:18px; text-align:center; margin-bottom:10px; color:var(--text); }
 
-.action-btn {
-    padding: 8px 16px;
-    background: #1976d2;
-    color: white;
-    border: none;
-    border-radius: 6px;
-    cursor: pointer;
-}
+/* badges & pills */
+.badge-row{ display:flex; gap:8px; flex-wrap:wrap; justify-content:center; margin-bottom:12px; }
+.badge{ background:var(--pill-bg); padding:8px 12px; border-radius:999px; border:1px solid rgba(255,255,255,0.04); color:var(--muted); font-size:13px; }
 
-.action-btn:hover {
-    background: #0d47a1;
-}
+.forms-grid{ display:grid; grid-template-columns: repeat(auto-fit, minmax(140px,1fr)); gap:10px; margin-top:8px; }
+.pill{ background:linear-gradient(180deg, rgba(255,255,255,0.02), rgba(255,255,255,0.01)); padding:12px; border-radius:10px; text-align:center; }
+.p-title{ font-size:12px; color:var(--muted); }
+.p-val{ font-size:18px; margin-top:6px; color:var(--text); font-weight:700; }
 
-/* ============================
-   MODALS (COMMON)
-============================= */
+/* grammar map rows */
+.gram-map{ margin-top:14px; }
+.row{ display:flex; gap:12px; padding:8px 0; border-top:1px dashed rgba(255,255,255,0.03); align-items:flex-start; }
+.gram-key{ width:160px; color:#9fb6d9; font-weight:700; }
+.gram-val{ flex:1; color:var(--muted); white-space:pre-wrap; line-height:1.6; }
 
-.modal {
-    display: none;
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.55);
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
+/* full grammar pre */
+.full-grammar-pre{ white-space:pre-wrap; text-align:left; font-size:15px; line-height:1.8; color:var(--text); }
 
-.modal-content {
-    background: white;
-    width: 90%;
-    max-width: 600px;
-    padding: 25px;
-    border-radius: 12px;
-    max-height: 85vh;
-    overflow-y: auto;
-}
-
-.modal-title {
-    font-size: 20px;
-    margin-bottom: 15px;
-}
-
-.close-btn {
-    float: right;
-    cursor: pointer;
-    font-size: 22px;
-    font-weight: bold;
-}
-
-/* ============================
-   GRAMMAR MODAL
-============================= */
-
-#grammarBody {
-    text-align: left;
-    line-height: 28px;
-    font-size: 16px;
-    white-space: pre-line;
-}
-
-/* ============================
-   WORD MODAL
-============================= */
-
-#wordAr {
-    font-size: 32px;
-    text-align: center;
-    direction: rtl;
-    margin-bottom: 10px;
-}
-
-#wordBn {
-    font-size: 17px;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Badges: POS, Gender, Number, Form, etc */
-
-.badge {
-    display: inline-block;
-    padding: 5px 10px;
-    margin: 4px;
-    font-size: 14px;
-    background: #e8eaf6;
-    border-radius: 8px;
-}
-
-/* Pills container (verb forms, root, noun, etc) */
-
-#formsGrid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(150px,1fr));
-    gap: 10px;
-    margin-top: 15px;
-}
-
-.pill {
-    background: #f1f8e9;
-    padding: 12px;
-    border-radius: 8px;
-    text-align: center;
-}
-
-.p-title {
-    font-size: 14px;
-    color: #555;
-}
-
-.p-val {
-    font-size: 18px;
-    margin-top: 6px;
-}
-
-/* Grammar Map */
-
-#gramMap {
-    margin-top: 20px;
-}
-
-.row {
-    display: flex;
-    padding: 6px 0;
-    border-bottom: 1px solid #e0e0e0;
-}
-
-.gram-key {
-    width: 150px;
-    font-weight: bold;
-}
-
-.gram-val {
-    flex: 1;
-}
-
-/* ============================
-   MOBILE FIXES
-============================= */
-
-@media (max-width: 480px) {
-    .modal-content {
-        width: 95%;
-        padding: 20px;
-    }
-
-    .arabic-line {
-        font-size: 24px;
-        line-height: 38px;
-    }
-
-    #formsGrid {
-        grid-template-columns: repeat(2, 1fr);
-    }
-
-    .gram-key {
-        width: 120px;
-    }
+/* responsive */
+@media (max-width:520px){
+  .word-ar-inner{ font-size:40px; }
+  .word{ font-size:26px; padding:6px 10px; }
+  .gram-key{ width:120px; }
 }
