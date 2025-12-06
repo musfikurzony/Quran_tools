@@ -1,24 +1,19 @@
-// storage.js
-// -------------------------------------------
-// Handles saving and loading settings from localStorage
-// -------------------------------------------
-
-export const Storage = {
-    save(key, value) {
-        try {
-            localStorage.setItem(key, JSON.stringify(value));
-        } catch (e) {
-            console.error("Storage Save Error:", e);
-        }
-    },
-
-    load(key, defaultValue = null) {
-        try {
-            const data = localStorage.getItem(key);
-            return data ? JSON.parse(data) : defaultValue;
-        } catch (e) {
-            console.error("Storage Load Error:", e);
-            return defaultValue;
-        }
+// storage.js (plain, no export)
+window.AppStorage = {
+  save(key, value) {
+    try {
+      localStorage.setItem(key, JSON.stringify(value));
+    } catch(e) {
+      console.error("Storage save error", e);
     }
+  },
+  load(key, defaultValue) {
+    try {
+      const v = localStorage.getItem(key);
+      return v ? JSON.parse(v) : defaultValue;
+    } catch(e) {
+      console.error("Storage load error", e);
+      return defaultValue;
+    }
+  }
 };
