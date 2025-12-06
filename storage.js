@@ -1,25 +1,10 @@
-/* storage.js — simple localStorage helper (non-module) */
-
-window.AppStorage = {
-  save(key, value){
-    try{
-      localStorage.setItem(key, JSON.stringify(value));
-    }catch(e){
-      console.error('Storage save error', e);
-    }
+/* storage.js - simple localStorage helper (non-module) */
+const Storage = {
+  save: function(key, value){
+    try { localStorage.setItem(key, JSON.stringify(value)); } catch(e){ console.error(e); }
   },
-
-  load(key, fallback = null){
-    try{
-      const v = localStorage.getItem(key);
-      return v ? JSON.parse(v) : fallback;
-    }catch(e){
-      console.error('Storage load error', e);
-      return fallback;
-    }
+  load: function(key, defaultValue){
+    try { const v = localStorage.getItem(key); return v ? JSON.parse(v) : (defaultValue===undefined?null:defaultValue); } catch(e){ console.error(e); return defaultValue===undefined?null:defaultValue; }
   },
-
-  remove(key){
-    try { localStorage.removeItem(key); } catch(e){ console.error(e); }
-  }
+  remove: function(key){ try{ localStorage.removeItem(key); }catch(e){console.error(e);} }
 };
