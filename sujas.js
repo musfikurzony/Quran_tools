@@ -1,17 +1,11 @@
-/* sujas.js — helper utilities (non-module) */
+/* sujas.js - small helpers for tooltip/popup positioning and initialization */
 
-/* Small helper to ensure clicking outside modals closes them */
-(function(){
-  document.addEventListener('click', function(e){
-    // close any element with data-close-on-outside if clicked outside
-    const activeModals = document.querySelectorAll('.modal');
-    activeModals.forEach(modal=>{
-      if(modal.style.display !== 'none'){
-        const content = modal.querySelector('.modal-content');
-        if(content && !content.contains(e.target) && !e.target.closest('.word')) {
-          modal.style.display = 'none';
-        }
-      }
-    });
+function initGrammarPopups(){
+  // currently not used for word-modal (we use modal), but keep available
+  document.body.addEventListener('click', function(e){
+    // placeholder if later glyph popups needed
   });
-})();
+}
+
+// call init on load
+window.addEventListener('load', function(){ try{ initGrammarPopups(); }catch(e){} });
